@@ -1,23 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import React,{useState} from 'react';
+import Main from './components/Main';
+import ContactList from './components/ContactList';
+import Header from './components/Header';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
+  // console.log(uuidv4());
+  const [contact, setcontacts] = useState([]);
+
+  const contactfunction = (e)=>{
+    setcontacts([...contact,{
+      id:uuidv4(),
+      name:e.name,
+      email:e.email
+    }])
+  };
+  const deletefunction = (de) => {
+    const newContactList = contact.filter((c)=>{
+      return c.id !== de
+    })
+    setcontacts(newContactList);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header/>
+      <Main tempfuncall ={contactfunction}/>
+      <ContactList contacts = {contact} delfunc={deletefunction} />
     </div>
   );
 }
