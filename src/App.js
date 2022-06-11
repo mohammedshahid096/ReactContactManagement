@@ -13,6 +13,7 @@ function App() {
     setcontacts([...contact,{
       id:uuidv4(),
       name:e.name,
+      phone:e.phone,
       email:e.email
     }])
   };

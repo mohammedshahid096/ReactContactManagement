@@ -2,11 +2,45 @@ import React,{useState} from "react";
 
 function Main(props) {
   const [name, setname] = useState("");
+  const [phone, setphone] = useState("");
   const [email, setemail] = useState("");
+  const [error, seterror] = useState(false);
+  const submitfunction =(e)=>{
+    e.preventDefault();
+    if(name === "" || phone === "" || !isNaN(phone) !== true )
+    {
+      if(name==="")
+      {
+       seterror("Enter the name");
+      }
+      else if(phone===""){
+        seterror("Enter the phone");
+      }
+     else{
+        seterror("Phone Number should be in Numeric");
+      }
+      return;
+    }
+    seterror(false);
+    props.tempfuncall({name,phone,email});
+    setname("");
+    setphone("");
+    setemail("");
+    document.getElementById("formcontactSubmit").reset();
+  }
+  
   // let tempvar = "welcome";
   return (
     <div className="container">
-      <form>
+      {!error?"":
+           <div className="alert alert-danger p-2" role="alert">
+           <center>
+         <h5>  {error}</h5>
+           </center>
+         </div>
+      }
+ 
+      <form id="formcontactSubmit">
         
       <div className="form-group mt-3">
           <label htmlFor="exampleInputPassword1">Name</label>
@@ -14,8 +48,16 @@ function Main(props) {
             type="text"
             className="form-control"
             placeholder="Contact Name"
-            // value="hello"
             onChange={(e)=>setname(e.target.value)}
+          />
+        </div>
+      <div className="form-group mt-3">
+          <label htmlFor="exampleInputPassword1">Phone.No</label>
+          <input
+            type="phone"
+            className="form-control"
+            placeholder="phone no"
+            onChange={(e)=>setphone( e.target.value)}
           />
         </div>
         <br />
@@ -27,7 +69,6 @@ function Main(props) {
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="Enter email"
-            // value="testing@gmail.com"
             onChange={(e)=>setemail(e.target.value)}
           />
         </div>
@@ -35,11 +76,13 @@ function Main(props) {
         <button
           type="button"
           className="btn btn-primary mt-4"
-          onClick={() => props.tempfuncall({name,email})}
-          // onClick={()=>props.tempfuncall(tempvar)}
+          // onClick={() => props.tempfuncall({name,phone,email})}  //return directly to parent functin
+          onClick={submitfunction}
         >
           Add
         </button>
+        {/* &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="reset" text="clear" className="btn btn-primary mt-4" /> */}
       </form>
     </div>
   );
